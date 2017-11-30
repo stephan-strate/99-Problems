@@ -1,4 +1,5 @@
 module Problems.One where
+import Data.List
 
 -- Problem 1
 myLast :: [a] -> a
@@ -36,3 +37,24 @@ isPalindrome xs     = (isPalindrome (init (tail xs))) && ((head xs) == (myLast x
 -- Problem 7
 data NestedList a = Elem a | List [NestedList a]
 flatten :: NestedList a -> [a]
+flatten (Elem a)        = [a]
+flatten (List [])       = []
+flatten (List (x:xs))   = flatten x ++ flatten (List xs)
+
+-- Problem 8
+compress :: [Char] -> [Char]
+compress input = foldl (\xs elem -> if (not (isElemInList xs elem)) then xs ++ [elem] else xs) [] input
+    where
+        isElemInList :: (Eq a) => [a] -> a -> Bool
+        isElemInList arr val = foldl (||) False (map (== val) arr)
+
+-- Problem 9
+pack :: [Char] -> [[Char]]
+pack = group
+
+-- Problem 10
+encode :: [Char] -> [(Int, Char)]
+encode input = map (build) (group input)
+    where
+        build :: [Char] -> (Int, Char)
+        build ls = (length ls, head ls)
